@@ -1,87 +1,150 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.WSA;
 
 [RequireComponent(typeof(Rigidbody))]
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : GroundGenerator
 {
-    public float gravity = 20.0f;
-    public float jumpHeight = 2.5f;
+    // public float gravity = 20.0f;
+    // public float jumpHeight = 2.5f;
+    //
+    // Rigidbody r;
+    // bool grounded = false;
+    // Vector3 defaultScale;
+    // bool crouch = false;
+    //
+    // // Start is called before the first frame update
+    // void Start()
+    // {
+    //     r = GetComponent<Rigidbody>();
+    //     r.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+    //     r.freezeRotation = true;
+    //     r.useGravity = false;
+    //     defaultScale = transform.localScale;
+    // }
+    //
+    // void Update()
+    // {
+    //     // Jump
+    //     if (Input.GetKeyDown(KeyCode.W) && grounded)
+    //     {
+    //         r.velocity = new Vector3(r.velocity.x, CalculateJumpVerticalSpeed(), r.velocity.z);
+    //     }
+    //
+    //     //Crouch
+    //     crouch = Input.GetKey(KeyCode.S);
+    //     if (crouch)
+    //     {
+    //         transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(defaultScale.x, defaultScale.y * 0.4f, defaultScale.z), Time.deltaTime * 7);
+    //     }
+    //     else
+    //     {
+    //         transform.localScale = Vector3.Lerp(transform.localScale, defaultScale, Time.deltaTime * 7);
+    //     }
+    //     
+    //     //save the game
+    //     if (Input.GetKeyDown(KeyCode.P))
+    //     {
+    //         SaveLoad.Save();
+    //     }
+    //     
+    //     if (Input.GetKeyDown(KeyCode.I))
+    //     {
+    //         Debug.Log(SaveLoad.savedGames.Count);
+    //     }
+    // }
+    //
+    // // Update is called once per frame
+    // void FixedUpdate()
+    // {
+    //     // We apply gravity manually for more tuning control
+    //     r.AddForce(new Vector3(0, -gravity * r.mass, 0));
+    //
+    //     grounded = false;
+    // }
+    //
+    // void OnCollisionStay()
+    // {
+    //     grounded = true;
+    // }
 
-    Rigidbody r;
-    bool grounded = false;
-    Vector3 defaultScale;
-    bool crouch = false;
+    // float CalculateJumpVerticalSpeed()
+    // {
+    //     // From the jump height and gravity we deduce the upwards speed 
+    //     // for the character to reach at the apex.
+    //     return Mathf.Sqrt(2 * jumpHeight * gravity);
+    // }
 
-    // Start is called before the first frame update
-    void Start()
+    // void OnCollisionEnter(Collision collision)
+    // {
+    //     if(collision.gameObject.tag == "Finish")
+    //     {
+    //         //print("GameOver!");
+    //         GroundGenerator.instance.gameOver = true;
+    //     }
+    // }
+
+    private Vector2 startTouchPosition;
+    private Vector2 currentTouchPosition;
+    private Vector2 endTouchPosition;
+    private bool stopTouch = false;
+
+    public float swipeRange;
+    public float tapRange;
+
+    private void Update()
     {
-        r = GetComponent<Rigidbody>();
-        r.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
-        r.freezeRotation = true;
-        r.useGravity = false;
-        defaultScale = transform.localScale;
+        Swipe();
     }
 
-    void Update()
+    public void Swipe()
     {
-        // Jump
-        if (Input.GetKeyDown(KeyCode.W) && grounded)
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
-            r.velocity = new Vector3(r.velocity.x, CalculateJumpVerticalSpeed(), r.velocity.z);
+            startTouchPosition = Input.GetTouch(0).position;
+            if (gameOver)
+            {
+                //Restart current scene
+                Scene scene = SceneManager.GetActiveScene();
+                SceneManager.LoadScene(scene.name);
+            }
+            else
+            {
+                //Start the game
+                gameStarted = true;
+            }
         }
 
-        //Crouch
-        crouch = Input.GetKey(KeyCode.S);
-        if (crouch)
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
         {
-            transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(defaultScale.x, defaultScale.y * 0.4f, defaultScale.z), Time.deltaTime * 7);
+            currentTouchPosition = Input.GetTouch(0).position;
+            Vector2 Distance = currentTouchPosition - startTouchPosition;
+
+            if (!stopTouch)
+            {
+                if (Distance.y > swipeRange)
+                {
+                    Debug.Log("up");
+                    stopTouch = true;
+                }
+
+                if (Distance.y < swipeRange)
+                {
+                    Debug.Log("down");
+                        stopTouch = true;
+
+                } 
+            }
         }
-        else
+
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
         {
-            transform.localScale = Vector3.Lerp(transform.localScale, defaultScale, Time.deltaTime * 7);
-        }
-        
-        //save the game
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            SaveLoad.Save();
-        }
-        
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            Debug.Log(SaveLoad.savedGames.Count);
+            stopTouch = false;
         }
     }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        // We apply gravity manually for more tuning control
-        r.AddForce(new Vector3(0, -gravity * r.mass, 0));
-
-        grounded = false;
-    }
-
-    void OnCollisionStay()
-    {
-        grounded = true;
-    }
-
-    float CalculateJumpVerticalSpeed()
-    {
-        // From the jump height and gravity we deduce the upwards speed 
-        // for the character to reach at the apex.
-        return Mathf.Sqrt(2 * jumpHeight * gravity);
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.tag == "Finish")
-        {
-            //print("GameOver!");
-            GroundGenerator.instance.gameOver = true;
-        }
-    }
+    
 }

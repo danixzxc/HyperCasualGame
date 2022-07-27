@@ -16,7 +16,7 @@ public class GroundGenerator : MainMenu
     int nextTileToActivate = -1;
     [HideInInspector]
     public bool gameOver = false;
-    static bool gameStarted = false;
+    public static bool gameStarted = false;
     public float score = 0;
 
     public static GroundGenerator instance;
@@ -112,7 +112,7 @@ public class GroundGenerator : MainMenu
             {
                 playerMesh.material = materials[materialNum];
                 GUI.color = Color.red;
-                GUI.Label(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 200), "Press 'Space' to start");
+                GUI.Label(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 100, 2500, 25000), "Press 'Space' to start");
             }
         }
 
