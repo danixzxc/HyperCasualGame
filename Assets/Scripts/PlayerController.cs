@@ -7,7 +7,7 @@ using UnityEngine.WSA;
 
 [RequireComponent(typeof(Rigidbody))]
 
-public class PlayerController : GroundGenerator
+public class PlayerController : MonoBehaviour
 {
     // public float gravity = 20.0f;
     // public float jumpHeight = 2.5f;
@@ -45,18 +45,7 @@ public class PlayerController : GroundGenerator
     //     {
     //         transform.localScale = Vector3.Lerp(transform.localScale, defaultScale, Time.deltaTime * 7);
     //     }
-    //     
-    //     //save the game
-    //     if (Input.GetKeyDown(KeyCode.P))
-    //     {
-    //         SaveLoad.Save();
-    //     }
-    //     
-    //     if (Input.GetKeyDown(KeyCode.I))
-    //     {
-    //         Debug.Log(SaveLoad.savedGames.Count);
-    //     }
-    // }
+    //    
     //
     // // Update is called once per frame
     // void FixedUpdate()
@@ -79,14 +68,16 @@ public class PlayerController : GroundGenerator
     //     return Mathf.Sqrt(2 * jumpHeight * gravity);
     // }
 
-    // void OnCollisionEnter(Collision collision)
-    // {
-    //     if(collision.gameObject.tag == "Finish")
-    //     {
-    //         //print("GameOver!");
-    //         GroundGenerator.instance.gameOver = true;
-    //     }
-    // }
+    
+void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Finish")
+        {
+            //print("GameOver!");
+            GroundGenerator.instance.gameOver = true;
+        }
+    }
+
 
     private Vector2 startTouchPosition;
     private Vector2 currentTouchPosition;
@@ -103,21 +94,21 @@ public class PlayerController : GroundGenerator
 
     public void Swipe()
     {
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-        {
-            startTouchPosition = Input.GetTouch(0).position;
-            if (gameOver)
-            {
-                //Restart current scene
-                Scene scene = SceneManager.GetActiveScene();
-                SceneManager.LoadScene(scene.name);
-            }
-            else
-            {
-                //Start the game
-                gameStarted = true;
-            }
-        }
+        // if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        // {
+        //     startTouchPosition = Input.GetTouch(0).position;
+        //     if (gameOver)
+        //     {
+        //         //Restart current scene
+        //         Scene scene = SceneManager.GetActiveScene();
+        //         SceneManager.LoadScene(scene.name);
+        //     }
+        //     else
+        //     {
+        //         //Start the game
+        //         gameStarted = true;
+        //     }
+        // }
 
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
         {
