@@ -15,8 +15,6 @@ public class GroundGenerator : MainMenu
     List<PlatformTile> spawnedTiles = new List<PlatformTile>();
     int nextTileToActivate = -1;
     [HideInInspector]
-    public bool gameOver = false;
-    public static bool gameStarted = false;
     public float score = 0;
 
     public static GroundGenerator instance;
@@ -81,20 +79,20 @@ public class GroundGenerator : MainMenu
             
             
             //if (Input.GetKeyDown(KeyCode.Space))
-            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-            {
-                if (gameOver)
-                {
-                    //Restart current scene
-                    Scene scene = SceneManager.GetActiveScene();
-                    SceneManager.LoadScene(scene.name);
-                }
-                else
-                {
-                    //Start the game
-                    gameStarted = true;
-                }
-            }
+            // if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+            // {
+            //     if (gameOver)
+            //     {
+            //         //Restart current scene
+            //         Scene scene = SceneManager.GetActiveScene();
+            //         SceneManager.LoadScene(scene.name);
+            //     }
+            //     else
+            //     {
+            //         //Start the game
+            //         gameStarted = true;
+            //     }
+            // }
         }
     }
 
@@ -109,7 +107,7 @@ public class GroundGenerator : MainMenu
         }
         else
         {
-            if (!gameStarted  && SceneManager.GetActiveScene().buildIndex == 1)
+            if (!gameStarted)
             {
                 playerMesh.material = materials[materialNum];
                 GUI.color = Color.red;

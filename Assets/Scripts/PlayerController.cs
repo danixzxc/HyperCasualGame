@@ -9,90 +9,41 @@ using UnityEngine.WSA;
 
 public class PlayerController : MonoBehaviour
 {
-    // public float gravity = 20.0f;
-    // public float jumpHeight = 2.5f;
-    //
     // Rigidbody r;
-    // bool grounded = false;
-    // Vector3 defaultScale;
-    // bool crouch = false;
-    //
-    // // Start is called before the first frame update
     // void Start()
     // {
     //     r = GetComponent<Rigidbody>();
     //     r.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
     //     r.freezeRotation = true;
-    //     r.useGravity = false;
-    //     defaultScale = transform.localScale;
-    // }
-    //
-    // void Update()
-    // {
-    //     // Jump
-    //     if (Input.GetKeyDown(KeyCode.W) && grounded)
-    //     {
-    //         r.velocity = new Vector3(r.velocity.x, CalculateJumpVerticalSpeed(), r.velocity.z);
-    //     }
-    //
-    //     //Crouch
-    //     crouch = Input.GetKey(KeyCode.S);
-    //     if (crouch)
-    //     {
-    //         transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(defaultScale.x, defaultScale.y * 0.4f, defaultScale.z), Time.deltaTime * 7);
-    //     }
-    //     else
-    //     {
-    //         transform.localScale = Vector3.Lerp(transform.localScale, defaultScale, Time.deltaTime * 7);
-    //     }
-    //    
-    //
-    // // Update is called once per frame
-    // void FixedUpdate()
-    // {
-    //     // We apply gravity manually for more tuning control
-    //     r.AddForce(new Vector3(0, -gravity * r.mass, 0));
-    //
-    //     grounded = false;
-    // }
-    //
-    // void OnCollisionStay()
-    // {
-    //     grounded = true;
-    // }
-
-    // float CalculateJumpVerticalSpeed()
-    // {
-    //     // From the jump height and gravity we deduce the upwards speed 
-    //     // for the character to reach at the apex.
-    //     return Mathf.Sqrt(2 * jumpHeight * gravity);
     // }
 
     
-void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.tag == "Finish")
-        {
-            //print("GameOver!");
-            GroundGenerator.instance.gameOver = true;
-        }
-    }
+// void OnCollisionEnter(Collision collision)
+//     {
+//         if(collision.gameObject.tag == "Finish")
+//         {
+//             //print("GameOver!");
+//             GroundGenerator.instance.gameOver = true;
+//         }
+//     }
 
 
-    private Vector2 startTouchPosition;
+    private float startTouchPositionX;
     private Vector2 currentTouchPosition;
     private Vector2 endTouchPosition;
-    private bool stopTouch = false;
 
-    public float swipeRange;
-    public float tapRange;
+    private float moveFactorX;
 
+    [SerializeField] private float maxSwerveSpeed = 1f;
+    [SerializeField] private float forwardSpeed = 0.02f;
+    [SerializeField]private float speed = 0.5f;
+    private float swerveSpeed;
     private void Update()
     {
         Swipe();
     }
 
-    public void Swipe()
+    private void Swipe()
     {
         // if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         // {
@@ -110,32 +61,45 @@ void OnCollisionEnter(Collision collision)
         //     }
         // }
 
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            startTouchPositionX = Input.GetTouch(0).position.x;
+            Debug.Log("Начало");
+        }
+        
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
         {
-            currentTouchPosition = Input.GetTouch(0).position;
-            Vector2 Distance = currentTouchPosition - startTouchPosition;
+            moveFactorX = Input.GetTouch(0).position.x - startTouchPositionX;
+            startTouchPositionX = Input.GetTouch(0).position.x;            Debug.Log("Движение");
 
-            if (!stopTouch)
-            {
-                if (Distance.y > swipeRange)
-                {
-                    Debug.Log("up");
-                    stopTouch = true;
-                }
-
-                if (Distance.y < swipeRange)
-                {
-                    Debug.Log("down");
-                        stopTouch = true;
-
-                } 
-            }
         }
-
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
+        
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
         {
-            stopTouch = false;
+            moveFactorX = 0f;            Debug.Log("Конец");
+
         }
+
+        
+        // if (Input.GetMouseButtonDown(0))
+        // {
+        //     startTouchPositionX = Input.GetTouch(0).position.x;
+        // }
+        //
+        // if (Input.GetMouseButton(0))
+        // {
+        //     moveFactorX = Input.GetTouch(0).position.x - startTouchPositionX;
+        //     startTouchPositionX = Input.GetTouch(0).position.x;
+        // }
+        //
+        // if (Input.GetMouseButtonUp(0))
+        // {
+        //     moveFactorX = 0f;
+        // }
+        
+        
+        swerveSpeed = moveFactorX * Time.deltaTime * speed;
+        swerveSpeed = Mathf.Clamp(swerveSpeed, -maxSwerveSpeed, maxSwerveSpeed);
     }
     
 }

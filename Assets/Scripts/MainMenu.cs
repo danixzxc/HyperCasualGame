@@ -6,11 +6,26 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
+    public bool gameOver = false;
+    public static bool gameStarted = false;
 
     public static int materialNum = 0;
+
+    [SerializeField]public Animator Animator;
     public void PlayGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        Animator.SetTrigger("GameStarted");
+        if (gameOver)
+        {
+            //Restart current scene
+            Scene scene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(scene.name);
+        }
+        else
+        {
+            //Start the game
+            gameStarted = true;
+        }
     }
     
     public void ExitGame()
