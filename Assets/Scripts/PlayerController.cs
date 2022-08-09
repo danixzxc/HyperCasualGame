@@ -17,15 +17,31 @@ public class PlayerController : MonoBehaviour
     //     r.freezeRotation = true;
     // }
 
-    
-// void OnCollisionEnter(Collision collision)
-//     {
-//         if(collision.gameObject.tag == "Finish")
-//         {
-//             //print("GameOver!");
-//             GroundGenerator.instance.gameOver = true;
-//         }
-//     }
+void OnTriggerEnter(Collider trigger)
+    {
+        if(trigger.gameObject.tag == "Finish")
+        {
+        print("GameOver!");
+        //     GroundGenerator.instance.gameOver = true;
+        }
+        if(trigger.gameObject.tag == "RedBonus")
+        {
+            print("Decrease player!");
+            transform.localScale *= 0.7f;
+
+            trigger.gameObject.SetActive(false);
+
+            //     GroundGenerator.instance.gameOver = true;
+        }
+        if(trigger.gameObject.tag == "GreenBonus")
+        {
+            print("Increase player!");
+            transform.localScale *= 1.4f;
+            
+            trigger.gameObject.SetActive(false);
+            //     GroundGenerator.instance.gameOver = true;
+        }
+    }
 
 
     private float startTouchPositionX;
@@ -81,25 +97,10 @@ public class PlayerController : MonoBehaviour
         }
 
         
-        // if (Input.GetMouseButtonDown(0))
-        // {
-        //     startTouchPositionX = Input.GetTouch(0).position.x;
-        // }
-        //
-        // if (Input.GetMouseButton(0))
-        // {
-        //     moveFactorX = Input.GetTouch(0).position.x - startTouchPositionX;
-        //     startTouchPositionX = Input.GetTouch(0).position.x;
-        // }
-        //
-        // if (Input.GetMouseButtonUp(0))
-        // {
-        //     moveFactorX = 0f;
-        // }
-        
         
         swerveSpeed = moveFactorX * Time.deltaTime * speed;
         swerveSpeed = Mathf.Clamp(swerveSpeed, -maxSwerveSpeed, maxSwerveSpeed);
+        transform.Translate(swerveSpeed, 0, forwardSpeed * Time.deltaTime);
     }
     
 }
