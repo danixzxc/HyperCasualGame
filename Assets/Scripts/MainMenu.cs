@@ -12,6 +12,12 @@ public class MainMenu : PlayerController
 
     [SerializeField]public Animator Animator;
 
+    [SerializeField]private GameObject PlayerIcon;
+
+    private float fullLength;
+
+    private float finalPositionX = 500f;
+
 
     public void PlayGame()
     {
@@ -46,10 +52,16 @@ public class MainMenu : PlayerController
         MoveProgressBar();
     }
 
+    private void Start()
+    {
+        fullLength = finishPosition.position.x - playerStartPosition.position.x;    // старт и финиш позиции есть у всех классов, сделать ненаследуемыми
+    }
+
     private void MoveProgressBar()
     {
-        float fullLength = playerStartPosition.position.x - finishPosition.position.x;
+        if (gameStarted)
+        PlayerIcon.transform.position += new Vector3(10 * Time.deltaTime, 0, 0);
 
-
+        // PlayerIcon.transform.position += new Vector3(((finishPosition.position.x - playerStartPosition.position.x) / fullLength * finalPositionX - 250), 0, 0);
     }
 }

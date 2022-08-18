@@ -26,12 +26,12 @@ void OnTriggerEnter(Collider trigger)
         }
         if(trigger.gameObject.tag == "RedBonus")
         {
-            transform.localScale *= 0.7f;
+            transform.localScale *= 0.9f;
             trigger.gameObject.SetActive(false);
         }
         if(trigger.gameObject.tag == "GreenBonus")
-        {
-            transform.localScale *= 1.4f;
+        {   
+            transform.localScale *= 1.1f;
             trigger.gameObject.SetActive(false);
         }
     }
@@ -42,8 +42,8 @@ void OnTriggerEnter(Collider trigger)
     private Vector2 endTouchPosition;
 
 
-    [SerializeField] public Transform playerStartPosition;
-    [SerializeField] public Transform finishPosition;
+    [SerializeField] private protected Transform playerStartPosition;
+    [SerializeField] private protected Transform finishPosition;
 
     private float moveFactorX;
 
