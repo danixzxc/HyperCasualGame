@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.WSA;
+using DG.Tweening;
 
 [RequireComponent(typeof(Rigidbody))]
 
@@ -45,23 +46,31 @@ public class PlayerController : MonoBehaviour
         }
         if(trigger.gameObject.tag == "RedBonus")
         {
-            transform.localScale *= 0.9f;
+
+            transform.DOScale(transform.localScale * 0.9f, 1f); // вроде теперь нельзя 2 сразу съесть. мб даже и хорошо
+
+            //transform.localScale *= 0.9f;
             trigger.gameObject.SetActive(false);
         }
         if(trigger.gameObject.tag == "GreenBonus")
         {   
-            transform.localScale *= 1.1f;
+            //transform.localScale *= 1.1f;
             trigger.gameObject.SetActive(false);
+
+            transform.DOScale(transform.localScale * 1.1f, 1f) ;
         }
     }
 
 
     private void Update()
     {
-        Swipe();
+        if (UnityEngine.Application.isEditor)
+            EditorSwerve();
+        else
+            Swerve();
     }
 
-    private void Swipe()
+    private void Swerve()
     {
         // if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         // {
@@ -104,5 +113,34 @@ public class PlayerController : MonoBehaviour
         if(!gameStarted)
             transform.Translate(swerveSpeed, 0, 0);
     }
-    
+
+    private void EditorSwerve()
+    {
+        
+        if (Input.GetMouseButtonDown(0))
+        {
+            startTouchPositionX = Input.mousePosition.x;
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            moveFactorX = Input.mousePosition.x - startTouchPositionX;
+            startTouchPositionX = Input.mousePosition.x;
+
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            moveFactorX = 0f;
+
+        }
+
+        swerveSpeed = moveFactorX * Time.deltaTime * speed;
+        swerveSpeed = Mathf.Clamp(swerveSpeed, -maxSwerveSpeed, maxSwerveSpeed);
+        if (gameStarted)
+            transform.Translate(swerveSpeed, 0, forwardSpeed * Time.deltaTime);
+        if (!gameStarted)
+            transform.Translate(swerveSpeed, 0, 0);
+    }
+
 }
