@@ -12,28 +12,22 @@ public class MainMenu : PlayerController
 
     [SerializeField]public Animator Animator;
 
-    [SerializeField]private GameObject PlayerIcon;
+    [Header ("UI references :")]
+    [SerializeField] private Image fillImage;
+    [SerializeField] private Text uiStartText;
+    [SerializeField] private Text uiFinishText;
 
-    private float fullLength;
+    private Vector3 finishPosition;//кэширование константы чтобы не вызывать finish.position каждый кадр
 
-    private float finalPositionX = 500f;
 
+    private float fullDistance;
+
+    public static bool gameStateShop = false;
 
     public void PlayGame()
     {
         Animator.SetTrigger("GameStarted");
         gameStarted = true;
-        // if (gameOver)
-        // {
-        //     //Restart current scene
-        //     Scene scene = SceneManager.GetActiveScene();
-        //     SceneManager.LoadScene(scene.name);
-        // }
-        // else
-        // {
-        //     //Start the game
-        //     gameStarted = true;
-        // }
     }
     
     public void ExitGame()
@@ -41,27 +35,45 @@ public class MainMenu : PlayerController
         Application.Quit();
     }
 
+    public void OpenShop()
+    {
+        gameStateShop = true;
+    }
+
+    public void ExitShop()
+    {
+        gameStateShop = false;
+    }
+
     public void SelectMaterial(int num)
     {
         materialNum = num;
     }
 
-    private void Update() 
-    
+    private void Update()
     {
-        MoveProgressBar();
+            UpdateProgressFIll();
     }
 
     private void Start()
     {
-        fullLength = finishPosition.position.x - playerStartPosition.position.x;    // старт и финиш позиции есть у всех классов, сделать ненаследуемыми
+        finishPosition = finishTransform.position;
+        fullDistance = GetDistance();
     }
 
-    private void MoveProgressBar()
+    private void UpdateProgressFIll()
     {
-        if (gameStarted)
-        PlayerIcon.transform.position += new Vector3(10 * Time.deltaTime, 0, 0);
-
-        // PlayerIcon.transform.position += new Vector3(((finishPosition.position.x - playerStartPosition.position.x) / fullLength * finalPositionX - 250), 0, 0);
+        if (playerTransform.position.z <= finishPosition.z)
+        {
+            float newDistance = GetDistance();
+            float progressValue = Mathf.InverseLerp(fullDistance, 0f, newDistance);
+            if (gameStarted)
+                fillImage.fillAmount = progressValue;
+        }
     }
+
+    private float GetDistance()
+    {
+        return (finishPosition - playerTransform.position).sqrMagnitude;
+    }    
 }

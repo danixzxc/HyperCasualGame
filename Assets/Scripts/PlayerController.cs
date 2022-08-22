@@ -17,7 +17,26 @@ public class PlayerController : MonoBehaviour
     //     r.freezeRotation = true;
     // }
 
-void OnTriggerEnter(Collider trigger)
+
+    private float startTouchPositionX;
+    private Vector2 currentTouchPosition;
+    private Vector2 endTouchPosition;
+
+
+    [SerializeField] private protected Transform playerTransform;
+    [SerializeField] private protected Transform finishTransform;
+
+    private float moveFactorX;
+
+    [SerializeField] private float maxSwerveSpeed = 1f;
+    [SerializeField] private float forwardSpeed = 0.02f;
+    [SerializeField] private float speed = 0.5f;
+    private float swerveSpeed;
+
+    public static bool gameStarted = false;
+
+
+    void OnTriggerEnter(Collider trigger)
     {
         if(trigger.gameObject.tag == "Finish")
         {
@@ -37,22 +56,6 @@ void OnTriggerEnter(Collider trigger)
     }
 
 
-    private float startTouchPositionX;
-    private Vector2 currentTouchPosition;
-    private Vector2 endTouchPosition;
-
-
-    [SerializeField] private protected Transform playerStartPosition;
-    [SerializeField] private protected Transform finishPosition;
-
-    private float moveFactorX;
-
-    [SerializeField] private float maxSwerveSpeed = 1f;
-    [SerializeField] private float forwardSpeed = 0.02f;
-    [SerializeField]private float speed = 0.5f;
-    private float swerveSpeed;
-
-    public static bool gameStarted = false;
     private void Update()
     {
         Swipe();
