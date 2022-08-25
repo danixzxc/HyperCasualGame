@@ -8,7 +8,7 @@ public class MainMenu : PlayerController
 {
     public bool gameOver = false;
 
-    public static int materialNum = 0;
+    //public static int materialNum = 0;
 
     [SerializeField]public Animator Animator;
 
@@ -26,7 +26,7 @@ public class MainMenu : PlayerController
 
     public void PlayGame()
     {
-        Animator.SetTrigger("GameStarted");
+        Animator.SetBool("GameStarted", true);
         gameStarted = true;
     }
     
@@ -47,7 +47,8 @@ public class MainMenu : PlayerController
 
     public void SelectMaterial(int num)
     {
-        materialNum = num;
+        //materialNum = num;
+        PlayerPrefs.SetInt("Skin", num);
     }
 
     private void Update()

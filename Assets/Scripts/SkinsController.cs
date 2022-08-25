@@ -9,13 +9,17 @@ public class SkinsController : MainMenu
 
     // PlayerPrefs - сохранение скина и количества монет, открытых скинов
 
-    void Update()
+    void Update() //очень неэкономно!!!! цикл в апдейте лол
     {
         for (int i = 0; i < Skins.Length; i++)
         { 
             Skins[i].SetActive(false);
         }
 
-        Skins[materialNum].SetActive(true);
+        Skins[PlayerPrefs.GetInt("Skin")].SetActive(true);
     }
 }
+
+//сейчас наверное просто в это решение добавить playerPrefs, но потом переписать обязательно
+
+//можно проверять два раза - Start игры и когда нажимаешь на кнопку в магазе цикл крутить

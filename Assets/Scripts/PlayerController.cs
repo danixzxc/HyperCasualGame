@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private protected Transform playerTransform;
     [SerializeField] private protected Transform finishTransform;
 
+    [SerializeField] private protected Animator animator;
+
     private float moveFactorX;
 
     [SerializeField] private float maxSwerveSpeed = 1f;
@@ -68,7 +70,11 @@ public class PlayerController : MonoBehaviour
             EditorSwerve();
         else
             Swerve();
-    }
+
+        //if (Mathf.Abs(transform.rotation.y) > 70)
+        //    transform.DORotate(new Vector3(0, 0, 0), 0.5f); //почему не робит?
+    
+}
 
     private void Swerve()
     {
@@ -110,16 +116,15 @@ public class PlayerController : MonoBehaviour
         swerveSpeed = Mathf.Clamp(swerveSpeed, -maxSwerveSpeed, maxSwerveSpeed);
         if(gameStarted)
             transform.Translate(swerveSpeed, 0, forwardSpeed * Time.deltaTime);
-        if(!gameStarted)
-            transform.Translate(swerveSpeed, 0, 0);
     }
 
     private void EditorSwerve()
     {
-        
+
         if (Input.GetMouseButtonDown(0))
         {
             startTouchPositionX = Input.mousePosition.x;
+            animator.SetBool("IsRunning", true);
         }
 
         if (Input.GetMouseButton(0))
@@ -132,15 +137,20 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             moveFactorX = 0f;
-
+            animator.SetBool("IsRunning", false);
         }
 
         swerveSpeed = moveFactorX * Time.deltaTime * speed;
         swerveSpeed = Mathf.Clamp(swerveSpeed, -maxSwerveSpeed, maxSwerveSpeed);
-        if (gameStarted)
+        if (gameStarted && animator.GetBool("IsRunning"))
+        {
             transform.Translate(swerveSpeed, 0, forwardSpeed * Time.deltaTime);
-        if (!gameStarted)
-            transform.Translate(swerveSpeed, 0, 0);
+
+            // transform.DORotate(Vector3.up * swerveSpeed * Time.deltaTime * 550f, 0.01f);
+
+            transform.Rotate(Vector3.up * swerveSpeed * Time.deltaTime * 550f);
+
+        }
     }
 
 }

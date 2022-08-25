@@ -109,7 +109,7 @@ public class GroundGenerator : MainMenu
         {
             if (!gameStarted)
             {
-                playerMesh.material = materials[materialNum];
+               // playerMesh.material = materials[materialNum];
                 GUI.color = Color.red;
                 GUI.Label(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 100, 2500, 25000), "Press 'Space' to start");
             }
