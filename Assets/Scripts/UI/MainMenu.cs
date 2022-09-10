@@ -4,30 +4,42 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainMenu : PlayerController
+public class MainMenu : MonoBehaviour
 {
     public bool gameOver = false;
-
-    //public static int materialNum = 0;
 
     [SerializeField]public Animator Animator;
 
     [Header ("UI references :")]
     [SerializeField] private Image fillImage;
-    [SerializeField] private Text uiStartText;
-    [SerializeField] private Text uiFinishText;
 
-    private Vector3 finishPosition;//кэширование константы чтобы не вызывать finish.position каждый кадр
+    [SerializeField] private Transform finishTransform;
+    [SerializeField] private Transform playerTransform;
 
+
+    private Vector3 finishPosition; //hash instead of update
 
     private float fullDistance;
 
     public static bool gameStateShop = false;
 
+
+
+    //private bool _gameStarted;
+    //private Transform _finishTransform;
+    //private Transform _playerTransform;
+
+    // public MainMenu(bool gamestarted, Transform finishTransform, Transform playerTransform)
+    //{
+    //  gameStarted = gamestarted;
+    //     finishTransform = finishTransform;
+    //     playerTransform = playerTransform;
+    // }
+
     public void PlayGame()
     {
         Animator.SetBool("GameStarted", true);
-        gameStarted = true;
+       // gameStarted = true;
     }
     
     public void ExitGame()
@@ -47,16 +59,15 @@ public class MainMenu : PlayerController
 
     public void SelectMaterial(int num)
     {
-        //materialNum = num;
         PlayerPrefs.SetInt("Skin", num);
     }
 
-    private void Update()
+    public void Update()
     {
             UpdateProgressFIll();
     }
 
-    private void Start()
+    public void Start()
     {
         finishPosition = finishTransform.position;
         fullDistance = GetDistance();
@@ -68,7 +79,7 @@ public class MainMenu : PlayerController
         {
             float newDistance = GetDistance();
             float progressValue = Mathf.InverseLerp(fullDistance, 0f, newDistance);
-            if (gameStarted)
+          //  if (gameStarted)
                 fillImage.fillAmount = progressValue;
         }
     }
@@ -76,5 +87,10 @@ public class MainMenu : PlayerController
     private float GetDistance()
     {
         return (finishPosition - playerTransform.position).sqrMagnitude;
-    }    
+    }
+
+    public bool GemeStateShop()
+    {
+        return gameStateShop;
+    }
 }
