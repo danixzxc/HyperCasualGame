@@ -52,7 +52,7 @@ public class PlayerController : MainMenu
 
     public  void Update()
     {
-        //if (gameStarted)
+        if (gameStarted)
 
             if (UnityEngine.Application.isEditor)
                 Swerve(EditorInput());
