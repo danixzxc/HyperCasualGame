@@ -8,15 +8,11 @@ using DG.Tweening;
 
 [RequireComponent(typeof(Rigidbody))]
 
-public class PlayerController // : MonoBehaviour
+public class PlayerController : MainMenu
 {
-
-
     private float startTouchPositionX;
 
-
     private Transform playerTransform;
-    private Rigidbody playerRigidbody;
 
 
     private float moveFactorX;
@@ -26,12 +22,9 @@ public class PlayerController // : MonoBehaviour
     private float speed = 0.5f;
     private float swerveSpeed;
 
-    public static bool gameStarted = false;
-
-    public PlayerController(Transform playerTransform, Rigidbody playerRigidbody)
+    public PlayerController(Transform playerTransform)
     {
         this.playerTransform = playerTransform;
-        this.playerRigidbody = playerRigidbody;
     }
 
     public void OnTriggerEnter(Collider trigger)
@@ -59,23 +52,25 @@ public class PlayerController // : MonoBehaviour
 
     public  void Update()
     {
+        //if (gameStarted)
 
-        if (UnityEngine.Application.isEditor)
-            EditorSwerve();
-        else
-            Swerve();
+            if (UnityEngine.Application.isEditor)
+                Swerve(EditorInput());
+            else
+                Swerve(MobileInput());
 
         //if (Mathf.Abs(transform.rotation.y) > 70)
         //    transform.DORotate(new Vector3(0, 0, 0), 0.5f); //почему не робит?
     
 }
 
-    private void Swerve()
+    private float MobileInput()
     {
 
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             startTouchPositionX = Input.GetTouch(0).position.x;
+            Actions.OnStateChange(true);
         }
         
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
@@ -87,23 +82,23 @@ public class PlayerController // : MonoBehaviour
         
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
         {
-            moveFactorX = 0f;           
-
+            moveFactorX = 0f;
+            Actions.OnStateChange(false);
         }
-        
+
         swerveSpeed = moveFactorX * Time.deltaTime * speed;
         swerveSpeed = Mathf.Clamp(swerveSpeed, -maxSwerveSpeed, maxSwerveSpeed);
-       // if(gameStarted)
-            playerTransform.Translate(swerveSpeed, 0, forwardSpeed * Time.deltaTime);
+
+        return swerveSpeed;
     }
 
-    private void EditorSwerve()
+    private float EditorInput()
     {
 
         if (Input.GetMouseButtonDown(0))
         {
             startTouchPositionX = Input.mousePosition.x;
-            Actions.OnStateChange(true);
+            Actions.OnStateChange(true); //не понятно что делает здесь. было бы run - стало понятнее
         }
 
         if (Input.GetMouseButton(0))
@@ -111,11 +106,6 @@ public class PlayerController // : MonoBehaviour
             moveFactorX = Input.mousePosition.x - startTouchPositionX;
             startTouchPositionX = Input.mousePosition.x;
 
-
-            swerveSpeed = moveFactorX * Time.deltaTime * speed;
-            swerveSpeed = Mathf.Clamp(swerveSpeed, -maxSwerveSpeed, maxSwerveSpeed);
-            playerTransform.Translate(swerveSpeed, 0, forwardSpeed * Time.deltaTime);
-            //playerTransform.Rotate(Vector3.up * swerveSpeed * Time.deltaTime * 850f); //vector3.up????????????
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -124,10 +114,15 @@ public class PlayerController // : MonoBehaviour
             Actions.OnStateChange(false);
         }
 
+        swerveSpeed = moveFactorX * Time.deltaTime * speed;
+        swerveSpeed = Mathf.Clamp(swerveSpeed, -maxSwerveSpeed, maxSwerveSpeed);
+
+        return swerveSpeed;
     }
 
-    public void Start()
+    private void Swerve(float swerveSpeed)
     {
-        playerRigidbody.constraints = RigidbodyConstraints.FreezePositionY;
+        playerTransform.Translate(swerveSpeed, 0, forwardSpeed * Time.deltaTime);
+        playerTransform.Rotate(Vector3.up * swerveSpeed * Time.deltaTime * 2500f);
     }
 }

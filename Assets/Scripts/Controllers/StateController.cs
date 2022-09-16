@@ -9,17 +9,13 @@ public class StateController
         shopMenu,
         game
     }
-
     public enum playerState
     {
         idle,
         running,
         dancing
     }
-
 }
-
-
 public static class Actions
 {
     public static Action<bool> OnStateChange;

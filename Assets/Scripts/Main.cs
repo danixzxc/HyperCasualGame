@@ -6,9 +6,6 @@ using Cinemachine;
 public class Main : MonoBehaviour
 {
     [SerializeField] private Transform playerTransform;
-    [SerializeField] private Rigidbody playerRigidbody;
-
-    [SerializeField] private Collider playerCollider;
 
     [SerializeField] private GameObject[] Skins;
 
@@ -26,16 +23,14 @@ public class Main : MonoBehaviour
     private bool gameStateShop;
     void Start()
     {
-        playerController = new PlayerController(playerTransform, playerRigidbody);
+        mainMenu = new MainMenu();
+        playerController = new PlayerController(playerTransform);
         cameraController = new CameraController();
         _skinsController = new SkinsController();
-        mainMenu = new MainMenu();
 
         animationController = new AnimationController(animator);
 
         animationController.Start();
-
-        playerCollider.SendMessage("OnTriggerEnter");
 
     }
 

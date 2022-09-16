@@ -3,13 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 
-public class CameraController// : MainMenu
+public class CameraController
 {
-
- //  private CinemachineVirtualCamera gameCamera;
-  // private CinemachineVirtualCamera shopCamera;
-
-
    public void Update( bool gameStateShop, CinemachineVirtualCamera gameCamera, CinemachineVirtualCamera shopCamera) 
     { 
         if (!gameStateShop)
