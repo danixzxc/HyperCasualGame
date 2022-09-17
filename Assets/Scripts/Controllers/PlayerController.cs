@@ -8,23 +8,37 @@ using DG.Tweening;
 
 [RequireComponent(typeof(Rigidbody))]
 
-public class PlayerController : MainMenu
+public class PlayerController// : MainMenu
 {
-    private float startTouchPositionX;
+    private float _startTouchPositionX;
 
-    private Transform playerTransform;
+    private Transform _playerTransform;
 
 
-    private float moveFactorX;
+    private float _moveFactorX;
 
-    private float maxSwerveSpeed = 1f;
-    private float forwardSpeed = 1.5f;
-    private float speed = 0.5f;
-    private float swerveSpeed;
+    private float _maxSwerveSpeed = 1f;
+    private float _forwardSpeed = 1.5f;
+    private float _speed = 0.5f;
+    private float _swerveSpeed;
+
+    private bool _gameStarted = false;
+    private bool _isRunning = false;
 
     public PlayerController(Transform playerTransform)
     {
-        this.playerTransform = playerTransform;
+        _playerTransform = playerTransform;
+    }
+
+    public void Start()
+    {
+         Actions.OnGameStateChange += GameStarted;
+    }
+
+    private void GameStarted(StateController.gameState gameState)
+    {
+        if (gameState == StateController.gameState.game)
+            _gameStarted = true;
     }
 
     public void OnTriggerEnter(Collider trigger)
@@ -37,7 +51,7 @@ public class PlayerController : MainMenu
         if(trigger.gameObject.tag == "RedBonus")
         {
 
-            playerTransform.DOScale(playerTransform.localScale * 0.9f, 1f); // вроде теперь нельзя 2 сразу съесть. мб даже и хорошо
+            _playerTransform.DOScale(_playerTransform.localScale * 0.9f, 1f); // вроде теперь нельзя 2 сразу съесть. мб даже и хорошо
 
             trigger.gameObject.SetActive(false);
         }
@@ -45,14 +59,14 @@ public class PlayerController : MainMenu
         {   
             trigger.gameObject.SetActive(false);
 
-            playerTransform.DOScale(playerTransform.localScale * 1.1f, 1f) ;
+            _playerTransform.DOScale(_playerTransform.localScale * 1.1f, 1f) ;
         }
     }
 
 
     public  void Update()
     {
-        if (gameStarted)
+        if (_gameStarted)
 
             if (UnityEngine.Application.isEditor)
                 Swerve(EditorInput());
@@ -69,27 +83,28 @@ public class PlayerController : MainMenu
 
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
-            startTouchPositionX = Input.GetTouch(0).position.x;
-            Actions.OnStateChange(true);
+            _startTouchPositionX = Input.GetTouch(0).position.x;
+            Actions.OnPlayerStateChange(StateController.playerState.running);
         }
         
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
         {
-            moveFactorX = Input.GetTouch(0).position.x - startTouchPositionX;
-            startTouchPositionX = Input.GetTouch(0).position.x;          
+            _moveFactorX = Input.GetTouch(0).position.x - _startTouchPositionX;
+            _startTouchPositionX = Input.GetTouch(0).position.x;          
 
         }
         
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
         {
-            moveFactorX = 0f;
-            Actions.OnStateChange(false);
+            _moveFactorX = 0f; 
+            Actions.OnPlayerStateChange(StateController.playerState.idle);
+
         }
 
-        swerveSpeed = moveFactorX * Time.deltaTime * speed;
-        swerveSpeed = Mathf.Clamp(swerveSpeed, -maxSwerveSpeed, maxSwerveSpeed);
+        _swerveSpeed = _moveFactorX * Time.deltaTime * _speed;
+        _swerveSpeed = Mathf.Clamp(_swerveSpeed, -_maxSwerveSpeed, _maxSwerveSpeed);
 
-        return swerveSpeed;
+        return _swerveSpeed;
     }
 
     private float EditorInput()
@@ -97,32 +112,37 @@ public class PlayerController : MainMenu
 
         if (Input.GetMouseButtonDown(0))
         {
-            startTouchPositionX = Input.mousePosition.x;
-            Actions.OnStateChange(true); //не понятно что делает здесь. было бы run - стало понятнее
+            _startTouchPositionX = Input.mousePosition.x;
+            Actions.OnPlayerStateChange(StateController.playerState.running);
+            _isRunning = true;
         }
 
         if (Input.GetMouseButton(0))
         {
-            moveFactorX = Input.mousePosition.x - startTouchPositionX;
-            startTouchPositionX = Input.mousePosition.x;
+            _moveFactorX = Input.mousePosition.x - _startTouchPositionX;
+            _startTouchPositionX = Input.mousePosition.x;
 
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            moveFactorX = 0f;
-            Actions.OnStateChange(false);
+            _moveFactorX = 0f;
+            Actions.OnPlayerStateChange(StateController.playerState.idle);
+            _isRunning = false;
         }
 
-        swerveSpeed = moveFactorX * Time.deltaTime * speed;
-        swerveSpeed = Mathf.Clamp(swerveSpeed, -maxSwerveSpeed, maxSwerveSpeed);
+        _swerveSpeed = _moveFactorX * Time.deltaTime * _speed;
+        _swerveSpeed = Mathf.Clamp(_swerveSpeed, -_maxSwerveSpeed, _maxSwerveSpeed);
 
-        return swerveSpeed;
+        return _swerveSpeed;
     }
 
     private void Swerve(float swerveSpeed)
     {
-        playerTransform.Translate(swerveSpeed, 0, forwardSpeed * Time.deltaTime);
-        playerTransform.Rotate(Vector3.up * swerveSpeed * Time.deltaTime * 2500f);
+        if (_isRunning)
+        {
+            _playerTransform.Translate(swerveSpeed, 0, _forwardSpeed * Time.deltaTime);
+            _playerTransform.Rotate(Vector3.up * swerveSpeed * Time.deltaTime * 2500f);
+        }
     }
 }

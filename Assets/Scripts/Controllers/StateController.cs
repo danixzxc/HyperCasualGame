@@ -7,7 +7,8 @@ public class StateController
     { 
         mainMenu,
         shopMenu,
-        game
+        game,
+        changeSkin
     }
     public enum playerState
     {
@@ -18,5 +19,8 @@ public class StateController
 }
 public static class Actions
 {
-    public static Action<bool> OnStateChange;
+    public static Action<StateController.gameState> OnGameStateChange;
+
+    public static Action<StateController.playerState> OnPlayerStateChange;
 }
+

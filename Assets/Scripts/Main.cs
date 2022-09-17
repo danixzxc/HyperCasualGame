@@ -5,40 +5,38 @@ using Cinemachine;
 
 public class Main : MonoBehaviour
 {
-    [SerializeField] private Transform playerTransform;
+    [SerializeField] private Transform _playerTransform;
 
-    [SerializeField] private GameObject[] Skins;
+    [SerializeField] private GameObject[] _skins;
 
-    [SerializeField] private CinemachineVirtualCamera gameCamera;
-    [SerializeField] private CinemachineVirtualCamera shopCamera;
+    [SerializeField] private CinemachineVirtualCamera _gameCamera;
+    [SerializeField] private CinemachineVirtualCamera _shopCamera;
 
-    [SerializeField] private Animator animator;
+    [SerializeField] private Animator _animator;
 
     private SkinsController _skinsController;
-    private MainMenu mainMenu;
-    private CameraController cameraController;
-    private AnimationController animationController;
-    private PlayerController playerController;
+    private MainMenu _mainMenu;
+    private CameraController _cameraController;
+    private AnimationController _animationController;
+    private PlayerController _playerController;
 
-    private bool gameStateShop;
+    private bool _gameStateShop;
     void Start()
     {
-        mainMenu = new MainMenu();
-        playerController = new PlayerController(playerTransform);
-        cameraController = new CameraController();
-        _skinsController = new SkinsController();
+        _mainMenu = new MainMenu();
+        _playerController = new PlayerController(_playerTransform);
+        _cameraController = new CameraController(_gameCamera, _shopCamera);
+        _skinsController = new SkinsController(_skins);
+        _animationController = new AnimationController(_animator);
 
-        animationController = new AnimationController(animator);
-
-        animationController.Start();
-
+        _animationController.Start();
+        _skinsController.Start();
+        _cameraController.Start();
+        _playerController.Start();
     }
 
     void Update()
     {
-        gameStateShop = mainMenu.GemeStateShop();
-        _skinsController.UpdateSkins(Skins);
-        cameraController.Update(gameStateShop, gameCamera, shopCamera);
-        playerController.Update();
+        _playerController.Update();
     }
 }

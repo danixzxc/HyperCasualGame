@@ -6,26 +6,22 @@ public class MainMenu : MonoBehaviour
     [SerializeField]public Animator Animator;
 
     [Header ("UI references :")]
-    [SerializeField] private Image fillImage;
+    [SerializeField] private Image _fillImage;
 
-    [SerializeField] private Transform finishTransform;
-    [SerializeField] private Transform playerTransform;
+    [SerializeField] private Transform _finishTransform;
+    [SerializeField] private Transform _playerTransform;
 
 
-    private Vector3 finishPosition; //hash instead of update
+    private Vector3 _finishPosition; //hash instead of update
 
-    private float fullDistance;
+    private float _fullDistance;
 
     public static bool gameStateShop = false;
 
-
-    public bool gameStarted = false;
-
     public void PlayGame()
     {
-       // Animator.SetBool("GameStarted", true);
-       gameStarted = true;
-        Debug.Log(gameStarted);
+        // Animator.SetBool("GameStarted", true);
+        Actions.OnGameStateChange(StateController.gameState.game);
     }
     
     public void ExitGame()
@@ -35,48 +31,47 @@ public class MainMenu : MonoBehaviour
 
     public void OpenShop()
     {
+        Actions.OnGameStateChange(StateController.gameState.shopMenu);
         gameStateShop = true;
     }
 
     public void ExitShop()
     {
+        Actions.OnGameStateChange(StateController.gameState.mainMenu);
         gameStateShop = false;
     }
 
     public void SelectMaterial(int num)
     {
         PlayerPrefs.SetInt("Skin", num);
+        Actions.OnGameStateChange(StateController.gameState.changeSkin);
     }
 
-    public void Update()
+    private void Update()
     {
             UpdateProgressFIll();
     }
 
-    public void Start()
-    {
-        finishPosition = finishTransform.position;
-        fullDistance = GetDistance();
+    private void Start()
+    {//почему выдает ошибку?
+     //   Actions.OnGameStateChange(StateController.gameState.mainMenu);
+        _finishPosition = _finishTransform.position;
+        _fullDistance = GetDistance();
     }
 
     private void UpdateProgressFIll()
     {
-        if (playerTransform.position.z <= finishPosition.z)
+        if (_playerTransform.position.z <= _finishPosition.z)
         {
             float newDistance = GetDistance();
-            float progressValue = Mathf.InverseLerp(fullDistance, 0f, newDistance);
-            if (gameStarted)
-                fillImage.fillAmount = progressValue;
+            float progressValue = Mathf.InverseLerp(_fullDistance, 0f, newDistance);
+           // if (gameStarted)
+                _fillImage.fillAmount = progressValue;
         }
     }
 
     private float GetDistance()
     {
-        return (finishPosition - playerTransform.position).sqrMagnitude;
-    }
-
-    public bool GemeStateShop()
-    {
-        return gameStateShop;
+        return (_finishPosition - _playerTransform.position).sqrMagnitude;
     }
 }

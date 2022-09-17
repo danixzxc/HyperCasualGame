@@ -4,17 +4,26 @@ using UnityEngine;
 
 public class SkinsController 
 { 
-    private GameObject[] Skins; 
+    private GameObject[] _skins;
 
-    public void UpdateSkins(GameObject[] skins) 
+    public SkinsController(GameObject[] skins)
     {
-        Skins = skins;
+        _skins = skins;
+    }
+    public void Start()
+    {
+        Actions.OnGameStateChange += UpdateSkins;
+    }
 
-        for (int i = 0; i < Skins.Length; i++)
-        { 
-            Skins[i].SetActive(false);
+    public void UpdateSkins(StateController.gameState gameState)
+    {
+        if (gameState == StateController.gameState.changeSkin)
+        {
+            for (int i = 0; i < _skins.Length; i++)
+            {
+                _skins[i].SetActive(false);
+            }
+            _skins[PlayerPrefs.GetInt("Skin")].SetActive(true);
         }
-        Skins[PlayerPrefs.GetInt("Skin")].SetActive(true);
-
     }
 }

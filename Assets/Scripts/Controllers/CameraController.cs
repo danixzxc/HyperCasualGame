@@ -5,17 +5,30 @@ using Cinemachine;
 
 public class CameraController
 {
-   public void Update( bool gameStateShop, CinemachineVirtualCamera gameCamera, CinemachineVirtualCamera shopCamera) 
+    private CinemachineVirtualCamera _gameCamera;
+    private CinemachineVirtualCamera _shopCamera;
+
+    public CameraController(CinemachineVirtualCamera gameCamera, CinemachineVirtualCamera shopCamera)
+    {
+        _gameCamera = gameCamera;
+        _shopCamera = shopCamera;
+    }
+    public void Start()
+    {
+        Actions.OnGameStateChange += UpdateCameras;
+    }
+ 
+    public void UpdateCameras(StateController.gameState gameState) 
     { 
-        if (!gameStateShop)
+        if (gameState == StateController.gameState.mainMenu)
         {
-            gameCamera.Priority = 10;
-            shopCamera.Priority = 1;
+            _gameCamera.Priority = 10;
+            _shopCamera.Priority = 1;
         }
-        if (gameStateShop)
+        if (gameState == StateController.gameState.shopMenu)
         {
-            gameCamera.Priority = 1;
-            shopCamera.Priority = 10;
+            _gameCamera.Priority = 1;
+            _shopCamera.Priority = 10;
         }
     }
 }

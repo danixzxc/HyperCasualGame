@@ -4,20 +4,24 @@ using UnityEngine;
 
 public class AnimationController
 {
-    private protected Animator animator;
+    private protected Animator _animator;
 
     public AnimationController( Animator animator) 
     {
-        this.animator = animator;
+        _animator = animator;
     }
 
     public void Start()
     {
-        Actions.OnStateChange += ChangeAnimation;
+        Actions.OnPlayerStateChange += ChangeAnimation;
     }
 
-    private void ChangeAnimation(bool isRunning)
+    private void ChangeAnimation(StateController.playerState playerState)
     { 
-        animator.SetBool("IsRunning", isRunning);
+        if (playerState == StateController.playerState.running)
+            _animator.SetBool("IsRunning", true);
+
+        if (playerState == StateController.playerState.idle)
+            _animator.SetBool("IsRunning", false);
     }
 }
