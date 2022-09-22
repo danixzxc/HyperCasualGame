@@ -25,6 +25,7 @@ public class PlayerController// : MainMenu
     private bool _gameStarted = false;
     private bool _isRunning = false;
 
+
     public PlayerController(Transform playerTransform)
     {
         _playerTransform = playerTransform;
@@ -41,7 +42,8 @@ public class PlayerController// : MainMenu
             _gameStarted = true;
     }
 
-    public void OnTriggerEnter(Collider trigger)
+
+  /*  public void OnTriggerEnter(Collider trigger)
     {
         if(trigger.gameObject.tag == "Finish")
         {
@@ -51,7 +53,7 @@ public class PlayerController// : MainMenu
         if(trigger.gameObject.tag == "RedBonus")
         {
 
-            _playerTransform.DOScale(_playerTransform.localScale * 0.9f, 1f); // вроде теперь нельзя 2 сразу съесть. мб даже и хорошо
+          //  _playerTransform.DOScale(_playerTransform.localScale * 0.9f, 1f); // вроде теперь нельзя 2 сразу съесть. мб даже и хорошо
 
             trigger.gameObject.SetActive(false);
         }
@@ -59,10 +61,10 @@ public class PlayerController// : MainMenu
         {   
             trigger.gameObject.SetActive(false);
 
-            _playerTransform.DOScale(_playerTransform.localScale * 1.1f, 1f) ;
+         //   _playerTransform.DOScale(_playerTransform.localScale * 1.1f, 1f) ;
         }
     }
-
+  */
 
     public  void Update()
     {
@@ -74,7 +76,7 @@ public class PlayerController// : MainMenu
                 Swerve(MobileInput());
 
         //if (Mathf.Abs(transform.rotation.y) > 70)
-        //    transform.DORotate(new Vector3(0, 0, 0), 0.5f); //почему не робит?
+         //   transform.DORotate(new Vector3(0, 0, 0), 0.5f); //почему не робит?
     
 }
 

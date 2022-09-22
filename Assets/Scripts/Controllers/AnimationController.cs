@@ -23,5 +23,8 @@ public class AnimationController
 
         if (playerState == StateController.playerState.idle)
             _animator.SetBool("IsRunning", false);
+
+        if (playerState == StateController.playerState.attack)
+            _animator.SetTrigger("Attack");
     }
 }

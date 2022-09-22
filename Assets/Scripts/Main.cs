@@ -19,8 +19,6 @@ public class Main : MonoBehaviour
     private CameraController _cameraController;
     private AnimationController _animationController;
     private PlayerController _playerController;
-
-    private bool _gameStateShop;
     void Start()
     {
         _mainMenu = new MainMenu();

@@ -14,7 +14,7 @@ public class StateController
     {
         idle,
         running,
-        dancing
+        attack
     }
 }
 public static class Actions

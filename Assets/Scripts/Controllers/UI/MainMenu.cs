@@ -53,7 +53,8 @@ public class MainMenu : MonoBehaviour
     }
 
     private void Start()
-    {//почему выдает ошибку?
+    {
+        //почему выдает ошибку?
      //   Actions.OnGameStateChange(StateController.gameState.mainMenu);
         _finishPosition = _finishTransform.position;
         _fullDistance = GetDistance();
