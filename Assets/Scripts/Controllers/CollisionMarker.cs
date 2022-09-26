@@ -1,10 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 
 public class CollisionMarker : MonoBehaviour
 {
+    PlayerController playerController;
+
+    [SerializeField] private TextMeshPro _text;
+
     public void OnTriggerEnter(Collider trigger)
     {
         if (trigger.gameObject.tag == "Finish")
@@ -25,6 +31,14 @@ public class CollisionMarker : MonoBehaviour
             trigger.gameObject.SetActive(false);
 
             transform.DOScale(transform.localScale * 1.1f, 1f) ;
+        }
+
+        if (trigger.gameObject.tag == "Crystal")
+        {
+            playerController.CountMoney();
+            _text.SetText(PlayerPrefs.GetInt("money").ToString());
+
+            trigger.gameObject.SetActive(false);
         }
     }
 }

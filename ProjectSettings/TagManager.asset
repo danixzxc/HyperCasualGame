@@ -6,6 +6,7 @@ TagManager:
   tags:
   - RedBonus
   - GreenBonus
+  - Crystal
   layers:
   - Default
   - TransparentFX

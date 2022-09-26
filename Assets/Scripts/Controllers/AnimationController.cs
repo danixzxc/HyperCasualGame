@@ -17,12 +17,12 @@ public class AnimationController
     }
 
     private void ChangeAnimation(StateController.playerState playerState)
-    { 
+    {
         if (playerState == StateController.playerState.running)
-            _animator.SetBool("IsRunning", true);
+            _animator.SetFloat("Velocity", 1f);
 
         if (playerState == StateController.playerState.idle)
-            _animator.SetBool("IsRunning", false);
+            _animator.SetFloat("Velocity", 0f);
 
         if (playerState == StateController.playerState.attack)
             _animator.SetTrigger("Attack");

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.WSA;
+//using UnityEngine.WSA;
 using DG.Tweening;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -25,7 +25,7 @@ public class PlayerController// : MainMenu
     private bool _gameStarted = false;
     private bool _isRunning = false;
 
-
+    private int _money = 100;
     public PlayerController(Transform playerTransform)
     {
         _playerTransform = playerTransform;
@@ -34,6 +34,7 @@ public class PlayerController// : MainMenu
     public void Start()
     {
          Actions.OnGameStateChange += GameStarted;
+        _money = PlayerPrefs.GetInt("money");
     }
 
     private void GameStarted(StateController.gameState gameState)
@@ -86,6 +87,7 @@ public class PlayerController// : MainMenu
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             _startTouchPositionX = Input.GetTouch(0).position.x;
+            _isRunning = true;
             Actions.OnPlayerStateChange(StateController.playerState.running);
         }
         
@@ -100,6 +102,7 @@ public class PlayerController// : MainMenu
         {
             _moveFactorX = 0f; 
             Actions.OnPlayerStateChange(StateController.playerState.idle);
+            _isRunning = false;
 
         }
 
@@ -146,5 +149,11 @@ public class PlayerController// : MainMenu
             _playerTransform.Translate(swerveSpeed, 0, _forwardSpeed * Time.deltaTime);
             _playerTransform.Rotate(Vector3.up * swerveSpeed * Time.deltaTime * 2500f);
         }
+    }
+
+    public void CountMoney()
+    {
+        _money++;
+        PlayerPrefs.SetInt("money", _money);
     }
 }
