@@ -733,7 +733,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &98841407
 RectTransform:
   m_ObjectHideFlags: 0
@@ -806,7 +806,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -3836,6 +3836,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1254241977}
     m_Modifications:
+    - target: {fileID: 1996537142575763124, guid: 996ca25818d5fe647afc92582706af5e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1996537142575763124, guid: 996ca25818d5fe647afc92582706af5e, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -7041,6 +7045,7 @@ MonoBehaviour:
   _fillImage: {fileID: 678302712}
   _finishTransform: {fileID: 131614735}
   _playerTransform: {fileID: 7637104567306866967}
+  text: {fileID: 0}
 --- !u!54 &1254021073
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9332,6 +9337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerTransform: {fileID: 7637104567306866967}
+  _playerRigidbody: {fileID: 7637104567306505592}
   _skins:
   - {fileID: 7637104567306505577}
   - {fileID: 366373329}
@@ -15173,7 +15179,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d799d2b77fc05a942aeb3f5dedb08ab6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _text: {fileID: 0}
 --- !u!54 &3566401989162948722
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -19201,7 +19206,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d799d2b77fc05a942aeb3f5dedb08ab6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _text: {fileID: 0}
 --- !u!1 &7637104567306505597
 GameObject:
   m_ObjectHideFlags: 0

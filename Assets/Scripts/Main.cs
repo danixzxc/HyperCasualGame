@@ -6,6 +6,7 @@ using Cinemachine;
 public class Main : MonoBehaviour
 {
     [SerializeField] private Transform _playerTransform;
+    [SerializeField] private Rigidbody _playerRigidbody;
 
     [SerializeField] private GameObject[] _skins;
 
@@ -22,7 +23,7 @@ public class Main : MonoBehaviour
     void Start()
     {
         _mainMenu = new MainMenu();
-        _playerController = new PlayerController(_playerTransform);
+        _playerController = new PlayerController(_playerTransform, _playerRigidbody);
         _cameraController = new CameraController(_gameCamera, _shopCamera);
         _skinsController = new SkinsController(_skins);
         _animationController = new AnimationController(_animator);

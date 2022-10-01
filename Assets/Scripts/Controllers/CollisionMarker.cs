@@ -8,8 +8,15 @@ using TMPro;
 public class CollisionMarker : MonoBehaviour
 {
     PlayerController playerController;
+    MainMenu mainMenu;
 
-    [SerializeField] private TextMeshPro _text;
+   // [SerializeField] private TextMeshPro _text;
+
+    private void Start()
+    {
+        playerController = new PlayerController(this.transform, new Rigidbody());
+        mainMenu = new MainMenu();
+    }
 
     public void OnTriggerEnter(Collider trigger)
     {
@@ -34,11 +41,12 @@ public class CollisionMarker : MonoBehaviour
         }
 
         if (trigger.gameObject.tag == "Crystal")
-        {
-            playerController.CountMoney();
-            _text.SetText(PlayerPrefs.GetInt("money").ToString());
 
+        {
             trigger.gameObject.SetActive(false);
+            //playerController.CountMoney();
+            Debug.Log(PlayerPrefs.GetInt("money").ToString());
+           // mainMenu.text.SetText(PlayerPrefs.GetInt("money").ToString());
         }
     }
 }

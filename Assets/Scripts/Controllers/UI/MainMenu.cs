@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
@@ -18,9 +19,10 @@ public class MainMenu : MonoBehaviour
 
     public static bool gameStateShop = false;
 
+    [SerializeField] public TextMeshPro text;
+
     public void PlayGame()
     {
-        // Animator.SetBool("GameStarted", true);
         Actions.OnGameStateChange(StateController.gameState.game);
     }
     

@@ -8,12 +8,13 @@ using DG.Tweening;
 
 [RequireComponent(typeof(Rigidbody))]
 
-public class PlayerController// : MainMenu
+public class PlayerController
 {
     private float _startTouchPositionX;
 
     private Transform _playerTransform;
 
+    private Rigidbody _playerRigidbody;
 
     private float _moveFactorX;
 
@@ -26,8 +27,14 @@ public class PlayerController// : MainMenu
     private bool _isRunning = false;
 
     private int _money = 100;
-    public PlayerController(Transform playerTransform)
-    {
+    //public PlayerController(Transform playerTransform)
+    // {
+    //    _playerTransform = playerTransform;
+    // }
+
+    public PlayerController(Transform playerTransform, Rigidbody playerRigidbody)
+     {
+        _playerRigidbody = playerRigidbody; 
         _playerTransform = playerTransform;
     }
 
@@ -42,30 +49,6 @@ public class PlayerController// : MainMenu
         if (gameState == StateController.gameState.game)
             _gameStarted = true;
     }
-
-
-  /*  public void OnTriggerEnter(Collider trigger)
-    {
-        if(trigger.gameObject.tag == "Finish")
-        {
-        Debug.Log("GameOver!");
-       // Animator.SetTrigger("GameEnded"); //and stop moving
-        }
-        if(trigger.gameObject.tag == "RedBonus")
-        {
-
-          //  _playerTransform.DOScale(_playerTransform.localScale * 0.9f, 1f); // вроде теперь нельзя 2 сразу съесть. мб даже и хорошо
-
-            trigger.gameObject.SetActive(false);
-        }
-        if(trigger.gameObject.tag == "GreenBonus")
-        {   
-            trigger.gameObject.SetActive(false);
-
-         //   _playerTransform.DOScale(_playerTransform.localScale * 1.1f, 1f) ;
-        }
-    }
-  */
 
     public  void Update()
     {
@@ -109,7 +92,7 @@ public class PlayerController// : MainMenu
         _swerveSpeed = _moveFactorX * Time.deltaTime * _speed;
         _swerveSpeed = Mathf.Clamp(_swerveSpeed, -_maxSwerveSpeed, _maxSwerveSpeed);
 
-        return _swerveSpeed;
+        return _swerveSpeed ;
     }
 
     private float EditorInput()
@@ -139,15 +122,17 @@ public class PlayerController// : MainMenu
         _swerveSpeed = _moveFactorX * Time.deltaTime * _speed;
         _swerveSpeed = Mathf.Clamp(_swerveSpeed, -_maxSwerveSpeed, _maxSwerveSpeed);
 
-        return _swerveSpeed;
+        return _swerveSpeed ;
     }
 
     private void Swerve(float swerveSpeed)
     {
         if (_isRunning)
         {
-            _playerTransform.Translate(swerveSpeed, 0, _forwardSpeed * Time.deltaTime);
-            _playerTransform.Rotate(Vector3.up * swerveSpeed * Time.deltaTime * 2500f);
+            //_playerTransform.Translate(swerveSpeed, 0, _forwardSpeed * Time.deltaTime);
+            //_playerTransform.Rotate(Vector3.up * swerveSpeed * Time.deltaTime * 2500f);
+            _playerRigidbody.MovePosition(_playerTransform.position + Vector3.forward);//(swerveSpeed, 0, _forwardSpeed * Time.deltaTime));
+            //_playerRigidbody.MoveRotation(new Quaternion(0, swerveSpeed * Time.deltaTime * 2500f, 0,1));
         }
     }
 
