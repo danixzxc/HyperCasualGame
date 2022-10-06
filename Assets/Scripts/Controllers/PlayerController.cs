@@ -10,6 +10,11 @@ using DG.Tweening;
 
 public class PlayerController
 {
+    public StateMachine movementSM;
+    public RunningState running;
+    public MinigameState minigame;
+    public MenuState menu;
+
     private float _startTouchPositionX;
 
     private Transform _playerTransform;
@@ -18,9 +23,11 @@ public class PlayerController
 
     private float _moveFactorX;
 
-    private float _maxSwerveSpeed = 1f;
+    public float maxSwerveSpeed = 1f;
+    public float speed = 0.5f;
+
+
     private float _forwardSpeed = 1.5f;
-    private float _speed = 0.5f;
     private float _swerveSpeed;
 
     private bool _gameStarted = false;
@@ -40,17 +47,44 @@ public class PlayerController
 
     public void Start()
     {
-         Actions.OnGameStateChange += GameStarted;
-        _money = PlayerPrefs.GetInt("money");
+        Actions.OnGameStateChange += GameStarted;
+
+
+        movementSM = new StateMachine();
+
+        running = new RunningState(this, movementSM);
+        minigame = new MinigameState(this, movementSM);
+        menu = new MenuState(this, movementSM);
+
+        movementSM.Initialize(menu);
     }
 
+    public void Update()
+    {
+        movementSM.CurrentState.HandleInput();
+
+        movementSM.CurrentState.PhysicsUpdate();
+
+        movementSM.CurrentState.LogicUpdate();
+    }
+
+    private void FixedUpdate()
+    {
+        // movementSM.CurrentState.PhysicsUpdate();
+    }
+    /*  public void Start()
+      {
+           Actions.OnGameStateChange += GameStarted;
+          _money = PlayerPrefs.GetInt("money");
+      }
+    */
     private void GameStarted(StateController.gameState gameState)
     {
         if (gameState == StateController.gameState.game)
             _gameStarted = true;
     }
 
-    public  void Update()
+    /*public  void Update()
     {
         if (_gameStarted)
 
@@ -62,9 +96,9 @@ public class PlayerController
         //if (Mathf.Abs(transform.rotation.y) > 70)
          //   transform.DORotate(new Vector3(0, 0, 0), 0.5f); //почему не робит?
     
-}
+}*/
 
-    private float MobileInput()
+   /* private float MobileInput()
     {
 
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
@@ -123,17 +157,17 @@ public class PlayerController
         _swerveSpeed = Mathf.Clamp(_swerveSpeed, -_maxSwerveSpeed, _maxSwerveSpeed);
 
         return _swerveSpeed ;
-    }
+    }*/
 
-    private void Swerve(float swerveSpeed)
+    public void Swerve(float swerveSpeed)
     {
-        if (_isRunning)
-        {
-            //_playerTransform.Translate(swerveSpeed, 0, _forwardSpeed * Time.deltaTime);
-            //_playerTransform.Rotate(Vector3.up * swerveSpeed * Time.deltaTime * 2500f);
-            _playerRigidbody.MovePosition(_playerTransform.position + Vector3.forward);//(swerveSpeed, 0, _forwardSpeed * Time.deltaTime));
+        //if (_isRunning)
+        //{
+            _playerTransform.Translate(swerveSpeed, 0, _forwardSpeed * Time.deltaTime);
+            _playerTransform.Rotate(Vector3.up * swerveSpeed * Time.deltaTime * 2500f);
+            //_playerRigidbody.MovePosition(_playerTransform.position + Vector3.forward);//(swerveSpeed, 0, _forwardSpeed * Time.deltaTime));
             //_playerRigidbody.MoveRotation(new Quaternion(0, swerveSpeed * Time.deltaTime * 2500f, 0,1));
-        }
+       // }
     }
 
     public void CountMoney()
@@ -141,4 +175,7 @@ public class PlayerController
         _money++;
         PlayerPrefs.SetInt("money", _money);
     }
+
+
+
 }

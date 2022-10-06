@@ -24,7 +24,8 @@ public class AnimationController
         if (playerState == StateController.playerState.idle)
             _animator.SetFloat("Velocity", 0f);
 
-        if (playerState == StateController.playerState.attack)
+        if (playerState == StateController.playerState.minigame)
             _animator.SetTrigger("Attack");
+        //_animator.SetFloat("Velocity", 1f);
     }
 }

@@ -24,7 +24,7 @@ public class CollisionMarker : MonoBehaviour
         {
             Debug.Log("GameOver!");
 
-            Actions.OnPlayerStateChange(StateController.playerState.attack);
+            Actions.OnPlayerStateChange(StateController.playerState.minigame);
         }
         if (trigger.gameObject.tag == "RedBonus")
         {
