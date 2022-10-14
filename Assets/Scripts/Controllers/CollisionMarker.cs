@@ -14,7 +14,7 @@ public class CollisionMarker : MonoBehaviour
 
     private void Start()
     {
-        playerController = new PlayerController(this.transform, new Rigidbody());
+        playerController = new PlayerController(this.transform, new Rigidbody()); // переписать
         mainMenu = new MainMenu();
     }
 
@@ -22,9 +22,9 @@ public class CollisionMarker : MonoBehaviour
     {
         if (trigger.gameObject.tag == "Finish")
         {
-            Debug.Log("GameOver!");
-
+            trigger.gameObject.SetActive(false);
             Actions.OnPlayerStateChange(StateController.playerState.minigame);
+            Debug.Log("запускаю пиньятку o_O");
         }
         if (trigger.gameObject.tag == "RedBonus")
         {

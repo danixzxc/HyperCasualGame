@@ -34,6 +34,8 @@ public class PlayerController
     private bool _isRunning = false;
 
     private int _money = 100;
+    private
+        float velocity = 0f;
     //public PlayerController(Transform playerTransform)
     // {
     //    _playerTransform = playerTransform;
@@ -167,7 +169,7 @@ public class PlayerController
             _playerTransform.Rotate(Vector3.up * swerveSpeed * Time.deltaTime * 2500f);
             //_playerRigidbody.MovePosition(_playerTransform.position + Vector3.forward);//(swerveSpeed, 0, _forwardSpeed * Time.deltaTime));
             //_playerRigidbody.MoveRotation(new Quaternion(0, swerveSpeed * Time.deltaTime * 2500f, 0,1));
-       // }
+            // }
     }
 
     public void CountMoney()

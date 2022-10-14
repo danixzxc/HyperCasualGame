@@ -6,7 +6,8 @@ using UnityEngine;
     public class MinigameState : State
     {
 
-        public MinigameState(PlayerController playerController, StateMachine stateMachine) : base(playerController, stateMachine)
+    MainMenu mainMenu = new MainMenu();
+    public MinigameState(PlayerController playerController, StateMachine stateMachine) : base(playerController, stateMachine)
         {
         }
 
@@ -14,9 +15,10 @@ using UnityEngine;
         {
         base.Enter();
         Debug.Log("бью пиньятку)) ^_^");
-        }
 
-        public override void Exit()
+    }
+
+    public override void Exit()
         {
             base.Exit();
         }
@@ -24,6 +26,10 @@ using UnityEngine;
         public override void HandleInput()
         {
             base.HandleInput();
+        if (Input.GetMouseButtonDown(0))
+        {
+            mainMenu.MinigameTap();
+        }
         }
 
         public override void PhysicsUpdate()

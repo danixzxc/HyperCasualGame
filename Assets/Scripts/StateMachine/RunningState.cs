@@ -14,10 +14,8 @@ public class RunningState : State
     public RunningState(PlayerController playerController, StateMachine stateMachine) : base(playerController, stateMachine)
     {
     }
-    //TODO мб действительно тут управление реализовать. а в playerController просто Move На получаемые параметры. потому что в Миниигре управление другое абсолютно
     public override void Enter()
     {
-        Debug.Log("могу бежать");
         Actions.OnPlayerStateChange += ChangeState;
 
         base.Enter();
@@ -28,7 +26,6 @@ public class RunningState : State
 
     public override void Exit()
     {
-        Debug.Log(3);
         base.Exit();
         //      character.ResetMoveParams();
     }

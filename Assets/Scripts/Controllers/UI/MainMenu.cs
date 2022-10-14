@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public class MainMenu : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Transform _finishTransform;
     [SerializeField] private Transform _playerTransform;
 
+    [SerializeField] public GameObject _minigameImage;
+    [SerializeField] public GUI ui;
+
 
     private Vector3 _finishPosition; //hash instead of update
 
@@ -20,6 +24,9 @@ public class MainMenu : MonoBehaviour
     public static bool gameStateShop = false;
 
     [SerializeField] public TextMeshPro text;
+
+    [SerializeField] public RectTransform minigameRectTransform;
+
 
     public void PlayGame()
     {
@@ -54,12 +61,33 @@ public class MainMenu : MonoBehaviour
             UpdateProgressFIll();
     }
 
+
     private void Start()
     {
-        //почему выдает ошибку?
-     //   Actions.OnGameStateChange(StateController.gameState.mainMenu);
         _finishPosition = _finishTransform.position;
         _fullDistance = GetDistance();
+        Debug.Log("подписался на Action");
+        Actions.OnPlayerStateChange += EnableMinigame;
+
+    }
+
+    private void TweenImage(RectTransform imageRectTransform)
+    {
+        imageRectTransform.DOLocalMoveX(-imageRectTransform.anchoredPosition.x, 2).SetLoops(-1,LoopType.Yoyo).SetEase(Ease.InOutCubic);
+    }
+
+    private void EnableMinigame(StateController.playerState playerState)
+    {
+        if (playerState == StateController.playerState.minigame)
+        {
+            _minigameImage.SetActive(true);
+            TweenImage(minigameRectTransform);
+        }
+    }
+
+    public void MinigameTap()
+    {
+        Debug.Log(minigameRectTransform.position.x.ToString());
     }
 
     private void UpdateProgressFIll()
@@ -68,8 +96,7 @@ public class MainMenu : MonoBehaviour
         {
             float newDistance = GetDistance();
             float progressValue = Mathf.InverseLerp(_fullDistance, 0f, newDistance);
-           // if (gameStarted)
-                _fillImage.fillAmount = progressValue;
+            _fillImage.fillAmount = progressValue;
         }
     }
 
