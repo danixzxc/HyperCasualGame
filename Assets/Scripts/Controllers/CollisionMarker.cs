@@ -25,6 +25,7 @@ public class CollisionMarker : MonoBehaviour
             trigger.gameObject.SetActive(false);
             Actions.OnPlayerStateChange(StateController.playerState.minigame);
             Debug.Log("запускаю пиньятку o_O");
+            
         }
         if (trigger.gameObject.tag == "RedBonus")
         {
@@ -44,9 +45,9 @@ public class CollisionMarker : MonoBehaviour
 
         {
             trigger.gameObject.SetActive(false);
-            //playerController.CountMoney();
+            PlayerController.CountMoney();
             Debug.Log(PlayerPrefs.GetInt("money").ToString());
-           // mainMenu.text.SetText(PlayerPrefs.GetInt("money").ToString());
+            // mainMenu.text.SetText(PlayerPrefs.GetInt("money").ToString());
         }
     }
 }

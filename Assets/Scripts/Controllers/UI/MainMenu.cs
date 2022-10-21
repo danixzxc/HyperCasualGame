@@ -66,7 +66,6 @@ public class MainMenu : MonoBehaviour
     {
         _finishPosition = _finishTransform.position;
         _fullDistance = GetDistance();
-        Debug.Log("подписался на Action");
         Actions.OnPlayerStateChange += EnableMinigame;
 
     }
@@ -87,7 +86,9 @@ public class MainMenu : MonoBehaviour
 
     public void MinigameTap()
     {
-        Debug.Log(minigameRectTransform.position.x.ToString());
+       // Debug.Log(minigameRectTransform.anchoredPosition.x.ToString());
+        Actions.OnPlayerStateChange(StateController.playerState.attack);
+
     }
 
     private void UpdateProgressFIll()

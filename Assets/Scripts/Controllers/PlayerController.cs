@@ -33,13 +33,9 @@ public class PlayerController
     private bool _gameStarted = false;
     private bool _isRunning = false;
 
-    private int _money = 100;
+    public static int money;// = 100;
     private
         float velocity = 0f;
-    //public PlayerController(Transform playerTransform)
-    // {
-    //    _playerTransform = playerTransform;
-    // }
 
     public PlayerController(Transform playerTransform, Rigidbody playerRigidbody)
      {
@@ -59,6 +55,10 @@ public class PlayerController
         menu = new MenuState(this, movementSM);
 
         movementSM.Initialize(menu);
+
+        money = PlayerPrefs.GetInt("money");
+        Debug.Log(PlayerPrefs.GetInt("money"));
+        Debug.Log(money);
     }
 
     public void Update()
@@ -67,19 +67,14 @@ public class PlayerController
 
         movementSM.CurrentState.PhysicsUpdate();
 
-        movementSM.CurrentState.LogicUpdate();
+         PlayerPrefs.Save();
     }
-
-    private void FixedUpdate()
+    public static void CountMoney()
     {
-        // movementSM.CurrentState.PhysicsUpdate();
+        PlayerController.money++;
+        PlayerPrefs.SetInt("money", money);
+        PlayerPrefs.Save();
     }
-    /*  public void Start()
-      {
-           Actions.OnGameStateChange += GameStarted;
-          _money = PlayerPrefs.GetInt("money");
-      }
-    */
     private void GameStarted(StateController.gameState gameState)
     {
         if (gameState == StateController.gameState.game)
@@ -166,18 +161,9 @@ public class PlayerController
         //if (_isRunning)
         //{
             _playerTransform.Translate(swerveSpeed, 0, _forwardSpeed * Time.deltaTime);
-            _playerTransform.Rotate(Vector3.up * swerveSpeed * Time.deltaTime * 2500f);
+            _playerTransform.Rotate(Vector3.up * swerveSpeed * Time.deltaTime * 250f);
             //_playerRigidbody.MovePosition(_playerTransform.position + Vector3.forward);//(swerveSpeed, 0, _forwardSpeed * Time.deltaTime));
             //_playerRigidbody.MoveRotation(new Quaternion(0, swerveSpeed * Time.deltaTime * 2500f, 0,1));
             // }
     }
-
-    public void CountMoney()
-    {
-        _money++;
-        PlayerPrefs.SetInt("money", _money);
-    }
-
-
-
 }

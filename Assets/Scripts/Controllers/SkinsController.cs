@@ -24,6 +24,7 @@ public class SkinsController
                 _skins[i].SetActive(false);
             }
             _skins[PlayerPrefs.GetInt("Skin")].SetActive(true);
+            PlayerPrefs.Save();
         }
     }
 }
