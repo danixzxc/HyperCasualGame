@@ -27,7 +27,7 @@ public class RunningState : State
     public override void Exit()
     {
         base.Exit();
-        //      character.ResetMoveParams();
+        //character.ResetMoveParams();
     }
 
     public override void HandleInput()

@@ -158,12 +158,13 @@ public class PlayerController
 
     public void Swerve(float swerveSpeed)
     {
-        //if (_isRunning)
-        //{
-            _playerTransform.Translate(swerveSpeed, 0, _forwardSpeed * Time.deltaTime);
-            _playerTransform.Rotate(Vector3.up * swerveSpeed * Time.deltaTime * 250f);
-            //_playerRigidbody.MovePosition(_playerTransform.position + Vector3.forward);//(swerveSpeed, 0, _forwardSpeed * Time.deltaTime));
-            //_playerRigidbody.MoveRotation(new Quaternion(0, swerveSpeed * Time.deltaTime * 2500f, 0,1));
-            // }
+        _playerTransform.Translate(swerveSpeed, 0, _forwardSpeed * Time.deltaTime);
+        //_playerTransform.Rotate(Vector3.up * swerveSpeed * Time.deltaTime * 250f);
+        //_playerRigidbody.MovePosition(_playerTransform.position + Vector3.forward);//(swerveSpeed, 0, _forwardSpeed * Time.deltaTime));
+        //Quaternion rot = Quaternion.Euler(Vector3.up * swerveSpeed * Time.deltaTime * 2500f);
+        Quaternion rot = Quaternion.Euler(new Vector3(0,swerveSpeed * Time.deltaTime,0));
+        //_playerRigidbody.rotation = rot;
+       // _playerRigidbody.MoveRotation(rot);
+        _playerTransform.rotation = rot;
     }
 }
