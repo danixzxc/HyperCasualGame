@@ -162,9 +162,11 @@ public class PlayerController
         //_playerTransform.Rotate(Vector3.up * swerveSpeed * Time.deltaTime * 250f);
         //_playerRigidbody.MovePosition(_playerTransform.position + Vector3.forward);//(swerveSpeed, 0, _forwardSpeed * Time.deltaTime));
         //Quaternion rot = Quaternion.Euler(Vector3.up * swerveSpeed * Time.deltaTime * 2500f);
-        Quaternion rot = Quaternion.Euler(new Vector3(0,swerveSpeed * Time.deltaTime,0));
+        Quaternion rot = Quaternion.Euler(new Vector3(0,swerveSpeed * 50, 0));
         //_playerRigidbody.rotation = rot;
        // _playerRigidbody.MoveRotation(rot);
-        _playerTransform.rotation = rot;
+       // _playerTransform.rotation = rot;
+      //  _playerRigidbody.MoveRotation(rot);
+        _playerTransform.Rotate(rot.eulerAngles);
     }
 }
