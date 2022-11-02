@@ -1,12 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
     public class MinigameState : State
     {
-
-    MainMenu mainMenu = new MainMenu();
     public MinigameState(PlayerController playerController, StateMachine stateMachine) : base(playerController, stateMachine)
         {
         }
@@ -14,9 +10,8 @@ using UnityEngine;
         public override void Enter()
         {
         base.Enter();
-        Debug.Log("бью пиньятку)) ^_^");
-
-    }
+        //Pinata.SetActive(true); TODO instead of PinataAnimationController
+        }
 
     public override void Exit()
         {
@@ -26,10 +21,12 @@ using UnityEngine;
         public override void HandleInput()
         {
             base.HandleInput();
+
         if (Input.GetMouseButtonDown(0))
         {
-            mainMenu.MinigameTap();
+            playerController.Attack();
         }
+
         }
 
         public override void PhysicsUpdate()

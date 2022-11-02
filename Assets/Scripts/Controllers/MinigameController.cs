@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class MinigameController : MonoBehaviour
 {
-    public void Attack()
+    [SerializeField] private Animator _pinataAnimator;
+    [SerializeField] private Animator _playerAnimator;
+    private void Attack()
     {
-            Actions.OnPlayerStateChange(StateController.playerState.minigame);
+        _pinataAnimator.SetTrigger("Attack");
+    }
+
+    private void AttackEnd()
+    {
+        _playerAnimator.SetBool("Attacking", false);
     }
 }

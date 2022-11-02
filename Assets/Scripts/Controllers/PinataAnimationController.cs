@@ -6,31 +6,20 @@ public class PinataAnimationController : MonoBehaviour
 {
     [SerializeField] private GameObject _pinata;
 
-    [SerializeField] private Animator _animator;
-
     private void Awake()
     {
-        Actions.OnPlayerStateChange += PlayAttackAnimation;
+        Actions.OnPlayerStateChange += PinataSetActive;
     }
     public void Start()
     {
         _pinata.SetActive(false);
     }
 
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            _animator.SetTrigger("Attack");
-        }
-    }
-
-    void PlayAttackAnimation(StateController.playerState playerState)
+    private void PinataSetActive(StateController.playerState playerState)
     {
         if (playerState == StateController.playerState.minigame)
         {
             _pinata.SetActive(true);
-            Debug.Log("появляется пиньятка :*");
         }
     }
 }

@@ -14,8 +14,7 @@ public class StateController
     {
         idle,
         running,
-        minigame,
-        attack
+        minigame
     }
 }
 public static class Actions

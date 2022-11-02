@@ -27,7 +27,6 @@ public class RunningState : State
     public override void Exit()
     {
         base.Exit();
-        //character.ResetMoveParams();
     }
 
     public override void HandleInput()
@@ -46,7 +45,6 @@ public class RunningState : State
         {
             moveFactor = Input.mousePosition.x - startTouchPostitionX;
             startTouchPostitionX = Input.mousePosition.x;
-
         }
 
         if (Input.GetMouseButtonUp(0))

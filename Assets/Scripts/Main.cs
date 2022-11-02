@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
@@ -23,7 +21,7 @@ public class Main : MonoBehaviour
     void Start()
     {
         _mainMenu = new MainMenu();
-        _playerController = new PlayerController(_playerTransform, _playerRigidbody);
+        _playerController = new PlayerController(_playerTransform, _animator);
         _cameraController = new CameraController(_gameCamera, _shopCamera);
         _skinsController = new SkinsController(_skins);
         _animationController = new AnimationController(_animator);

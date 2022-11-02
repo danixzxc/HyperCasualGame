@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using System;
 
 public class MainMenu : MonoBehaviour
 {
@@ -15,6 +16,10 @@ public class MainMenu : MonoBehaviour
 
     [SerializeField] public GameObject _minigameImage;
     [SerializeField] public GUI ui;
+
+
+    [SerializeField] private Animator _playerAnimator;
+
 
 
     private Vector3 _finishPosition; //hash instead of update
@@ -67,12 +72,12 @@ public class MainMenu : MonoBehaviour
         _finishPosition = _finishTransform.position;
         _fullDistance = GetDistance();
         Actions.OnPlayerStateChange += EnableMinigame;
-
     }
 
     private void TweenImage(RectTransform imageRectTransform)
     {
-        imageRectTransform.DOLocalMoveX(-imageRectTransform.anchoredPosition.x, 2).SetLoops(-1,LoopType.Yoyo).SetEase(Ease.InOutCubic);
+       imageRectTransform.DOLocalMoveX(-imageRectTransform.anchoredPosition.x, 2).SetLoops(-1,LoopType.Yoyo).SetEase(Ease.InOutCubic);
+        //эта штука хорошо работает, просто она должна вызваться 1 раз при старте мини-игры и не должна обращать внимание на последующие нажатия
     }
 
     private void EnableMinigame(StateController.playerState playerState)
@@ -81,14 +86,8 @@ public class MainMenu : MonoBehaviour
         {
             _minigameImage.SetActive(true);
             TweenImage(minigameRectTransform);
+            //тоже всё норм. просто на нажатиях не вызывать ещё раз стейт мини-игры, он 1 раз активирован и всё! вот и чистка кода)
         }
-    }
-
-    public void MinigameTap()
-    {
-       // Debug.Log(minigameRectTransform.anchoredPosition.x.ToString());
-        Actions.OnPlayerStateChange(StateController.playerState.attack);
-
     }
 
     private void UpdateProgressFIll()

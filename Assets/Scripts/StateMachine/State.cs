@@ -13,8 +13,6 @@ public abstract class State
 
     public virtual void Enter()
     {
-        //DisplayOnUI(UIManager.Alignment.Left);
-        Debug.Log("state entered");
     }
 
     public virtual void HandleInput()

@@ -27,12 +27,6 @@ public class AnimationController
         if (playerState == StateController.playerState.minigame)
         {
             _animator.SetTrigger("Minigame");
-            _animator.SetBool("Attacking", false);
-
-        }
-        if (playerState == StateController.playerState.attack)
-        {
-            _animator.SetBool("Attacking", true);
         }
     }
 }
