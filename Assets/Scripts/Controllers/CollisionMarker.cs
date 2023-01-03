@@ -31,7 +31,7 @@ public class CollisionMarker : MonoBehaviour
 
         {
             trigger.gameObject.SetActive(false);
-            GemsController.CountMoney();
+            GemsController.UpdateMoneyCount(1);
             Debug.Log(PlayerPrefs.GetInt("money").ToString());
         }
     }
