@@ -30,6 +30,9 @@ public class CanvasController : MonoBehaviour //rename to canvas
 
     [SerializeField] public TMP_Text text;
 
+    [SerializeField] private TMP_Text _speedLevel;
+    [SerializeField] private TMP_Text _sizeLevel;
+
     [SerializeField] public RectTransform minigameRectTransform;
 
 
@@ -67,27 +70,26 @@ public class CanvasController : MonoBehaviour //rename to canvas
     }
     public void UpgradeSpeed(float speed)
     {
-        int money = PlayerPrefs.GetInt("money");
-        if (price < money)
+        if (price < PlayerPrefs.GetInt("money"))
         {
-            money -= price;
-            PlayerPrefs.SetInt("money", money); 
+            GemsController.UpdateMoneyCount(-price);
             PlayerPrefs.SetFloat("Speed", PlayerPrefs.GetFloat("Speed") * speed);
-            Actions.OnPlayerPrefsChange(playerPrefs.money);
+            PlayerPrefs.SetInt("SpeedLevel", PlayerPrefs.GetInt("SpeedLevel") + 1);
+            _speedLevel.text = PlayerPrefs.GetInt("SpeedLevel").ToString();
+            PlayerPrefs.Save();
             Actions.OnPlayerPrefsChange(playerPrefs.speed);
         }
     }
     public void UpgradeSize(float size)
     { 
-        int money = PlayerPrefs.GetInt("money");
-        if (price < money)
+        if (price < PlayerPrefs.GetInt("money"))
         {
-            money -= price;
-            PlayerPrefs.SetInt("money", money);
+            GemsController.UpdateMoneyCount(-price);
             PlayerPrefs.SetFloat("Size", PlayerPrefs.GetFloat("Size") * size);
-            Actions.OnPlayerPrefsChange(playerPrefs.money);
+            PlayerPrefs.SetInt("SizeLevel", PlayerPrefs.GetInt("SizeLevel") + 1);
+            _sizeLevel.text = PlayerPrefs.GetInt("SizeLevel").ToString();
+            PlayerPrefs.Save();
             Actions.OnPlayerPrefsChange(playerPrefs.size);
-            //GemsController.UpdateMoneyCount(-price);
         }
     }
 
@@ -100,6 +102,10 @@ public class CanvasController : MonoBehaviour //rename to canvas
 
     private void Start()
     {
+        if (PlayerPrefs.GetInt("SpeedLevel").Equals(0)) PlayerPrefs.SetInt("SpeedLevel", 1);
+        if (PlayerPrefs.GetInt("SizeLevel").Equals(0)) PlayerPrefs.SetInt("SizeLevel", 1);
+        _speedLevel.text = PlayerPrefs.GetInt("SpeedLevel").Equals(0) ? "1" : PlayerPrefs.GetInt("SpeedLevel").ToString();
+        _sizeLevel.text = PlayerPrefs.GetInt("SizeLevel").Equals(0) ? "1" : PlayerPrefs.GetInt("SizeLevel").ToString();
         _finishPosition = _finishTransform.position;
         _fullDistance = GetDistance();
         Actions.OnPlayerStateChange += EnableMinigame;

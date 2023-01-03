@@ -32,7 +32,32 @@ public class CollisionMarker : MonoBehaviour
         {
             trigger.gameObject.SetActive(false);
             GemsController.UpdateMoneyCount(1);
-            Debug.Log(PlayerPrefs.GetInt("money").ToString());
+        }
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.I))
+            GemsController.UpdateMoneyCount(15);
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            PlayerPrefs.SetFloat("Size", 1f);
+            PlayerPrefs.Save();
+        }    
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            PlayerPrefs.SetFloat("Speed", 1.5f);
+            PlayerPrefs.Save();
+        }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            PlayerPrefs.SetInt("SizeLevel", 1);
+            PlayerPrefs.Save();
+        }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            PlayerPrefs.SetInt("SpeedLevel", 1);
+            PlayerPrefs.Save();
         }
     }
 }

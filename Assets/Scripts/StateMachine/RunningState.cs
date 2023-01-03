@@ -34,25 +34,52 @@ public class RunningState : State
 
         base.HandleInput();
 
-        if (Input.GetMouseButtonDown(0))
+        if (Application.isEditor)
         {
-            startTouchPostitionX = Input.mousePosition.x;
-            Actions.OnPlayerStateChange(StateController.playerState.running);
-           isRunning = true;
+            if (Input.GetMouseButtonDown(0))
+            {
+                startTouchPostitionX = Input.mousePosition.x;
+                Actions.OnPlayerStateChange(StateController.playerState.running);
+                isRunning = true;
+            }
+
+            if (Input.GetMouseButton(0))
+            {
+                moveFactor = Input.mousePosition.x - startTouchPostitionX;
+                startTouchPostitionX = Input.mousePosition.x;
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                moveFactor = 0f;
+                Actions.OnPlayerStateChange(StateController.playerState.idle);
+                isRunning = false;
+            }
+        }
+        else
+        {
+
+
+            if (Input.touches[0].phase == TouchPhase.Began)
+            {
+                startTouchPostitionX = Input.mousePosition.x;
+                Actions.OnPlayerStateChange(StateController.playerState.running);
+                isRunning = true;
+            }
+            if (Input.touches[0].phase == TouchPhase.Moved)
+            {
+                moveFactor = Input.mousePosition.x - startTouchPostitionX;
+                startTouchPostitionX = Input.mousePosition.x;
+            }
+
+            if (Input.touches[0].phase == TouchPhase.Ended)
+            {
+                moveFactor = 0f;
+                Actions.OnPlayerStateChange(StateController.playerState.idle);
+                isRunning = false;
+            }
         }
 
-        if (Input.GetMouseButton(0))
-        {
-            moveFactor = Input.mousePosition.x - startTouchPostitionX;
-            startTouchPostitionX = Input.mousePosition.x;
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            moveFactor = 0f;
-            Actions.OnPlayerStateChange(StateController.playerState.idle);
-           isRunning = false;
-        }
 
         swerveSpeed = moveFactor * Time.deltaTime * speed;
         swerveSpeed = Mathf.Clamp(swerveSpeed, -maxSwerveSpeed, maxSwerveSpeed);

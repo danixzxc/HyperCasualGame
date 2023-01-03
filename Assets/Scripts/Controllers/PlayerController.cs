@@ -14,8 +14,10 @@ public class PlayerController
     public float speed = 0.5f;
 
     private float _forwardSpeed = 1.5f;
+    private float _standartSize = 1f;
+    private float _standartSpeed = 0.5f;
 
-   
+
     public PlayerController(Transform playerTransform, Animator playerAnimator)
      {
         _playerAnimator = playerAnimator; 
@@ -25,9 +27,10 @@ public class PlayerController
     public void Start()
     {
 
-        float size = PlayerPrefs.GetFloat("Size");
+        float size = PlayerPrefs.GetFloat("Size").Equals(0f) ? _standartSize : PlayerPrefs.GetFloat("Size");
         _playerTransform.localScale = new Vector3(size, size, size);
-        speed = PlayerPrefs.GetFloat("Speed");
+
+        speed = PlayerPrefs.GetFloat("Speed").Equals(0f) ? _standartSpeed : PlayerPrefs.GetFloat("Speed");
 
         movementSM = new StateMachine();
 
@@ -64,11 +67,11 @@ public class PlayerController
         {
             float size = PlayerPrefs.GetFloat("Size");
             _playerTransform.localScale = new Vector3(size, size, size);
-            
         }
         if (playerPrefs == playerPrefs.speed)
+        {
             speed = PlayerPrefs.GetFloat("Speed");
+
+        }
     }
-
-
 }
