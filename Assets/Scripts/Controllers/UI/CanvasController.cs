@@ -20,7 +20,7 @@ public class CanvasController : MonoBehaviour //rename to canvas
 
     [SerializeField] private Animator _playerAnimator;
 
-    private int price = 10;
+
 
     private Vector3 _finishPosition; //hash instead of update
 
@@ -60,40 +60,10 @@ public class CanvasController : MonoBehaviour //rename to canvas
         PlayerPrefs.SetInt("Skin", num);
         Actions.OnGameStateChange(StateController.gameState.changeSkin);
     }
-    public void BuyMaterial(int num)
-    {
-        PlayerPrefs.SetInt("Skin", num);
-        Actions.OnGameStateChange(StateController.gameState.changeSkin);
-    }
-    public void UpgradeSpeed(float speed)
-    {
-        int money = PlayerPrefs.GetInt("money");
-        if (price < money)
-        {
-            money -= price;
-            PlayerPrefs.SetInt("money", money); 
-            PlayerPrefs.SetFloat("Speed", PlayerPrefs.GetFloat("Speed") * speed);
-            Actions.OnPlayerPrefsChange(playerPrefs.money);
-            Actions.OnPlayerPrefsChange(playerPrefs.speed);
-        }
-    }
-    public void UpgradeSize(float size)
-    { 
-        int money = PlayerPrefs.GetInt("money");
-        if (price < money)
-        {
-            money -= price;
-            PlayerPrefs.SetInt("money", money);
-            PlayerPrefs.SetFloat("Size", PlayerPrefs.GetFloat("Size") * size);
-            Actions.OnPlayerPrefsChange(playerPrefs.money);
-            Actions.OnPlayerPrefsChange(playerPrefs.size);
-            //GemsController.UpdateMoneyCount(-price);
-        }
-    }
 
     private void Update()
     {
-        UpdateProgressFIll();
+            UpdateProgressFIll();
         text.SetText(PlayerPrefs.GetInt("money").ToString());
     }
 

@@ -11,9 +11,9 @@ public class GemsController : MonoBehaviour
         Debug.Log(PlayerPrefs.GetInt("money"));
         Debug.Log(money);
     }
-    public static void UpdateMoneyCount(int sum)
+    public static void CountMoney()
     {
-        money += sum;
+        money++;
         PlayerPrefs.SetInt("money", money);
         PlayerPrefs.Save();
     }

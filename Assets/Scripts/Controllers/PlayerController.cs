@@ -24,11 +24,6 @@ public class PlayerController
 
     public void Start()
     {
-
-        float size = PlayerPrefs.GetFloat("Size");
-        _playerTransform.localScale = new Vector3(size, size, size);
-        speed = PlayerPrefs.GetFloat("Speed");
-
         movementSM = new StateMachine();
 
         running = new RunningState(this, movementSM);
@@ -37,7 +32,6 @@ public class PlayerController
 
         movementSM.Initialize(menu);
 
-        Actions.OnPlayerPrefsChange += ChangeSizeOrSpeed;
     }
 
     public void Update()
@@ -57,18 +51,4 @@ public class PlayerController
     {
         _playerAnimator.SetBool("Attacking", true);
     }
-
-    private void ChangeSizeOrSpeed(playerPrefs playerPrefs)
-    {
-        if (playerPrefs == playerPrefs.size)
-        {
-            float size = PlayerPrefs.GetFloat("Size");
-            _playerTransform.localScale = new Vector3(size, size, size);
-            
-        }
-        if (playerPrefs == playerPrefs.speed)
-            speed = PlayerPrefs.GetFloat("Speed");
-    }
-
-
 }
