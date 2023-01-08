@@ -59,5 +59,10 @@ public class CollisionMarker : MonoBehaviour
             PlayerPrefs.SetInt("SpeedLevel", 1);
             PlayerPrefs.Save();
         }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+        }
     }
 }

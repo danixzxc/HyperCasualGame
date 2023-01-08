@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerController
 {
@@ -65,8 +66,9 @@ public class PlayerController
     {
         if (playerPrefs == playerPrefs.size)
         {
-            float size = PlayerPrefs.GetFloat("Size");
-            _playerTransform.localScale = new Vector3(size, size, size);
+            float size = PlayerPrefs.GetFloat("Size"); 
+            _playerTransform.DOScale(new Vector3(size, size, size), 1f);
+
         }
         if (playerPrefs == playerPrefs.speed)
         {
